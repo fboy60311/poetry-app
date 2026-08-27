@@ -1,60 +1,14 @@
 <template>
   <div class="page">
-    <scroll scroll-y class="scroll-box">
-      <div class="home-wrap">
-        <text class="h1">古诗词</text>
-        <text class="sub">腕上诗心 每日一阅</text>
-
-        <div class="today-card" onclick="openToday">
-          <text class="today-label">今日诗词</text>
-          <text class="today-title">{{ todayTitle }}</text>
-          <text class="today-author">{{ todayMeta }}</text>
-        </div>
-
-        <div class="btn" onclick="goCategory">
-          <text class="btn-text">按朝代</text>
-        </div>
-        <div class="btn" onclick="goRandom">
-          <text class="btn-text">随机一首</text>
-        </div>
-        <div class="btn" onclick="goSearch">
-          <text class="btn-text">搜索</text>
-        </div>
-        <div class="btn" onclick="goFavorites">
-          <text class="btn-text">我的收藏</text>
-        </div>
-      </div>
-    </scroll>
+    <div class="home-wrap">
+      <text class="h1">古诗词</text>
+    </div>
   </div>
 </template>
 
 <script>
-  import router from '@blueos.app.appmanager.router'
-  import poemsIndex from '../../data/poems-index.js'
-
   export default {
-    data: {
-      todayTitle: '',
-      todayMeta: '',
-      todayId: 1
-    },
-    onInit() {
-      const d = new Date()
-      const p = poemsIndex[d.getDate() % poemsIndex.length]
-      this.todayId = p.id
-      this.todayTitle = p.title
-      this.todayMeta = p.dynasty + ' · ' + p.author
-    },
-    openToday() {
-      router.push({ uri: '/pages/detail?id=' + this.todayId })
-    },
-    goRandom() {
-      const p = poemsIndex[Math.floor(Math.random() * poemsIndex.length)]
-      router.push({ uri: '/pages/detail?id=' + p.id })
-    },
-    goCategory() { router.push({ uri: '/pages/category' }) },
-    goFavorites() { router.push({ uri: '/pages/favorites' }) },
-    goSearch() { router.push({ uri: '/pages/search' }) }
+    onInit() {}
   }
 </script>
 
@@ -63,28 +17,5 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-  }
-  .today-card {
-    flex-direction: column;
-    width: 100%;
-    background-color: #F3E4C7;
-    border-radius: 14px;
-    padding: 14px;
-    margin-bottom: 14px;
-    border: 1px solid #E4D5B7;
-  }
-  .today-label {
-    font-size: 18px;
-    color: #B08A4F;
-    margin-bottom: 6px;
-  }
-  .today-title {
-    font-size: 26px;
-    color: #4A3B2A;
-    margin-bottom: 6px;
-  }
-  .today-author {
-    font-size: 18px;
-    color: #6B4F2A;
   }
 </style>

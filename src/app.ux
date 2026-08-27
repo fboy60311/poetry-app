@@ -15,13 +15,10 @@
 
   .page {
     flex-direction: column;
-    align-items: center;
     background-color: #FBF3E6;
     width: 466px;
     height: 466px;
-    /* 圆形屏安全区内缩：顶部/底部给 86px，左右 34px，
-       让内容落在圆形可见的中央安全带，避免被圆切掉 */
-    padding: 86px 34px;
+    padding: 16px;
   }
 
   .h1 {
@@ -87,11 +84,8 @@
   }
 
   .scroll-box {
-    flex-direction: column;
     width: 100%;
-    /* 画布高 466 - 上下各 86 内缩 = 294，正好填满圆形安全带 */
-    height: 294px;
-    /* 去掉 scroll 默认白底，改为米黄，消除“白色圆形页面”异常 */
-    background-color: #FBF3E6;
+    height: 434px;
+    margin-bottom: 12px;
   }
 </style>
