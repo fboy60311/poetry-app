@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  import router from '@blueos.app.router'
+  import router from '@blueos.app.appmanager.router'
   import poems from '../../data/poems.js'
   import { toggleFav, isFav } from '../../utils/store.js'
 

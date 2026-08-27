@@ -10,14 +10,14 @@
     "backgroundColor": "#FBF3E6"
   },
   "router": {
-    "entry": "pages/index/index",
+    "entry": "pages/index",
     "pages": {
-      "pages/index/index": { "component": "index" },
-      "pages/category/category": { "component": "category" },
-      "pages/list/list": { "component": "list" },
-      "pages/detail/detail": { "component": "detail" },
-      "pages/search/search": { "component": "search" },
-      "pages/favorites/favorites": { "component": "favorites" }
+      "pages/index": { "component": "index" },
+      "pages/category": { "component": "index" },
+      "pages/list": { "component": "index" },
+      "pages/detail": { "component": "index" },
+      "pages/search": { "component": "index" },
+      "pages/favorites": { "component": "index" }
     }
   },
   "features": [

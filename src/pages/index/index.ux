@@ -19,7 +19,7 @@
 </template>
 
 <script>
-  import router from '@blueos.app.router'
+  import router from '@blueos.app.appmanager.router'
   import poems from '../../data/poems.js'
 
   export default {
@@ -31,14 +31,14 @@
       this.today = poems[d.getDate() % poems.length]
     },
     openToday() {
-      router.push({ uri: '/pages/detail/detail?id=' + this.today.id })
+      router.push({ uri: '/pages/detail?id=' + this.today.id })
     },
     goRandom() {
       const p = poems[Math.floor(Math.random() * poems.length)]
-      router.push({ uri: '/pages/detail/detail?id=' + p.id })
+      router.push({ uri: '/pages/detail?id=' + p.id })
     },
-    goCategory() { router.push({ uri: '/pages/category/category' }) },
-    goFavorites() { router.push({ uri: '/pages/favorites/favorites' }) },
-    goSearch() { router.push({ uri: '/pages/search/search' }) }
+    goCategory() { router.push({ uri: '/pages/category' }) },
+    goFavorites() { router.push({ uri: '/pages/favorites' }) },
+    goSearch() { router.push({ uri: '/pages/search' }) }
   }
 </script>
