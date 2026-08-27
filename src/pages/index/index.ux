@@ -1,35 +1,32 @@
 <template>
   <div class="page">
-    <text class="h1">古诗词</text>
-    <text class="sub">腕上诗心 · 每日一阅</text>
+    <scroll scroll-y class="scroll-box">
+      <text class="h1">古诗词</text>
+      <text class="sub">腕上诗心 · 每日一阅</text>
 
-    <div class="today-card" onclick="openToday">
-      <text class="today-label">今日诗词</text>
-      <text class="today-title">{{ today.title }}</text>
-      <text class="today-author">{{ today.dynasty }} · {{ today.author }}</text>
-    </div>
+      <div class="today-card" onclick="openToday">
+        <text class="today-label">今日诗词</text>
+        <text class="today-title">{{ today.title }}</text>
+        <text class="today-author">{{ today.dynasty }} · {{ today.author }}</text>
+      </div>
 
-    <div class="row">
-      <div class="btn btn-left" onclick="goCategory">
+      <div class="btn" onclick="goCategory">
         <text class="btn-emoji">📜</text>
         <text class="btn-text">按朝代</text>
       </div>
-      <div class="btn btn-right" onclick="goRandom">
+      <div class="btn" onclick="goRandom">
         <text class="btn-emoji">🎲</text>
         <text class="btn-text">随机一首</text>
       </div>
-    </div>
-
-    <div class="row">
-      <div class="btn btn-left" onclick="goSearch">
+      <div class="btn" onclick="goSearch">
         <text class="btn-emoji">🔍</text>
         <text class="btn-text">搜索</text>
       </div>
-      <div class="btn btn-right" onclick="goFavorites">
+      <div class="btn" onclick="goFavorites">
         <text class="btn-emoji">❤️</text>
         <text class="btn-text">我的收藏</text>
       </div>
-    </div>
+    </scroll>
   </div>
 </template>
 
@@ -59,6 +56,7 @@
 </script>
 
 <style>
+  .scroll-box { height: 466px; }
   .today-card {
     background-color: #F3E4C7;
     border-radius: 14px;
