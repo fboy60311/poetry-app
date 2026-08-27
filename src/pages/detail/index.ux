@@ -4,22 +4,18 @@
     <text class="sub">{{ poem.dynasty }} · {{ poem.author }}</text>
 
     <div class="tabs">
-      <div class="tab {{ tab==='content' ? 'on' : '' }}" onclick="setTab('content')"><text class="tab-t">正文</text></div>
-      <div class="tab {{ tab==='zhushi' ? 'on' : '' }}" onclick="setTab('zhushi')"><text class="tab-t">注释</text></div>
-      <div class="tab {{ tab==='note' ? 'on' : '' }}" onclick="setTab('note')"><text class="tab-t">译注</text></div>
+      <div class="tab {{ tab==='content' ? 'on' : '' }} tab-1" onclick="setTab('content')"><text class="tab-t">正文</text></div>
+      <div class="tab {{ tab==='zhushi' ? 'on' : '' }} tab-2" onclick="setTab('zhushi')"><text class="tab-t">注释</text></div>
+      <div class="tab {{ tab==='note' ? 'on' : '' }} tab-3" onclick="setTab('note')"><text class="tab-t">译注</text></div>
     </div>
 
     <scroll scroll-y class="scroll-box">
-      <div class="card poem-lines">
-        <div class="line" for="{{line in lines}}">
-          <text class="text">{{ line }}</text>
-        </div>
-      </div>
+      <text class="text line" for="{{line in lines}}">{{ line }}</text>
     </scroll>
 
     <div class="row">
-      <div class="btn" onclick="toggle"><text class="btn-text">{{ fav ? '已收藏' : '收藏' }}</text></div>
-      <div class="btn" onclick="goBack"><text class="btn-text">返回</text></div>
+      <div class="btn btn-left" onclick="toggle"><text class="btn-text">{{ fav ? '已收藏' : '收藏' }}</text></div>
+      <div class="btn btn-right" onclick="goBack"><text class="btn-text">返回</text></div>
     </div>
   </div>
 </template>
@@ -52,7 +48,6 @@
       if (this.tab === 'content') t = p.content || ''
       else if (this.tab === 'zhushi') t = p.zhushi || '暂无注释'
       else t = p.note || '暂无译注'
-      // 按 \n 拆行，保留空行占位，避免 text 不识别换行符导致黑屏
       this.lines = t.split('\n').map(s => s.trim()).filter(s => s.length > 0)
       if (this.lines.length === 0) this.lines = ['暂无内容']
     },
@@ -70,20 +65,31 @@
 </script>
 
 <style>
-  .tabs { flex-direction: row; margin-bottom: 12px; }
-  .tab {
-    flex-grow: 1; padding: 8px 0; margin: 0 4px; border-radius: 16px;
-    background-color: #FFFDF8; border: 1px solid #E4D5B7; text-align: center;
+  .tabs {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 12px;
   }
-  .tab.on { background-color: #F3E4C7; border-color: #D9C3A0; }
+  .tab {
+    position: absolute;
+    top: 0;
+    width: 130px;
+    height: 50px;
+    background-color: #FFFDF8;
+    border: 1px solid #E4D5B7;
+    border-radius: 16px;
+    text-align: center;
+  }
+  .tab-1 { left: 10px; }
+  .tab-2 { left: 152px; }
+  .tab-3 { left: 294px; }
+  .tab.on {
+    background-color: #F3E4C7;
+    border-color: #D9C3A0;
+  }
   .tab-t { font-size: 20px; color: #6B4F2A; }
 
-  /* scroll 必须定高才能竖向滚动；scroll 本身不支持 margin/padding */
-  .scroll-box { height: 300px; margin-bottom: 12px; }
-
-  .poem-lines { flex-direction: column; }
-  .line { flex-direction: column; margin-bottom: 8px; }
-  .text {
-    font-size: 22px; line-height: 36px; color: #4A3B2A;
-  }
+  .scroll-box { height: 210px; margin-bottom: 12px; }
+  .line { margin-bottom: 10px; }
 </style>

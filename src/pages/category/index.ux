@@ -1,12 +1,11 @@
 <template>
   <div class="page">
     <text class="h1">分类浏览</text>
-    <div class="grid">
+    <scroll scroll-y class="scroll-box">
       <div class="tile" for="{{it in items}}" onclick="openDynasty(it.value)">
-        <text class="big">📜</text>
         <text class="lab">{{ it.label }} · {{ it.n }}首</text>
       </div>
-    </div>
+    </scroll>
   </div>
 </template>
 
@@ -40,9 +39,14 @@
 </script>
 
 <style>
-  .grid { flex-direction: row; flex-wrap: wrap; justify-content: space-between; }
-  .tile { width: 48%; background-color: #FFFDF8; border: 1px solid #E4D5B7;
-    border-radius: 14px; padding: 14px; margin-bottom: 12px; align-items: center; }
-  .big { font-size: 30px; text-align: center; }
-  .lab { font-size: 19px; color: #6B4F2A; text-align: center; margin-top: 6px; }
+  .scroll-box { height: 360px; }
+  .tile {
+    width: 100%;
+    background-color: #FFFDF8;
+    border: 1px solid #E4D5B7;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .lab { font-size: 22px; color: #6B4F2A; text-align: center; }
 </style>

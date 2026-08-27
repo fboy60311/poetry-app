@@ -1,9 +1,11 @@
 <template>
   <div class="page">
     <text class="h1">{{ title }}</text>
-    <div class="card" for="{{item in list}}" onclick="open(item.id)">
-      <text class="text">{{ item.title }} · {{ item.author }}</text>
-    </div>
+    <scroll scroll-y class="scroll-box">
+      <div class="card" for="{{item in list}}" onclick="open(item.id)">
+        <text class="text">{{ item.title }} · {{ item.author }}</text>
+      </div>
+    </scroll>
   </div>
 </template>
 
@@ -28,3 +30,7 @@
     }
   }
 </script>
+
+<style>
+  .scroll-box { height: 360px; }
+</style>

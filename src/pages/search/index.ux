@@ -2,9 +2,11 @@
   <div class="page">
     <text class="h1">搜索</text>
     <input class="search-box" placeholder="标题 / 作者 / 关键词" onchange="onInput" value="{{ kw }}"></input>
-    <div class="card" for="{{item in result}}" onclick="open(item.id)">
-      <text class="text">{{ item.title }} · {{ item.author }}</text>
-    </div>
+    <scroll scroll-y class="scroll-box">
+      <div class="card" for="{{item in result}}" onclick="open(item.id)">
+        <text class="text">{{ item.title }} · {{ item.author }}</text>
+      </div>
+    </scroll>
     <text class="sub" if="{{ kw && result.length === 0 }}">没有找到相关诗词</text>
   </div>
 </template>
@@ -42,4 +44,5 @@
     color: #4A3B2A;
     margin-bottom: 12px;
   }
+  .scroll-box { height: 300px; }
 </style>

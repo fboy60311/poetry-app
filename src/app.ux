@@ -5,17 +5,15 @@
 <script>
   /**manifest**/
   export default {
-    onCreate() {
-      // App 级初始化（如全局收藏缓存）可放这里
-    },
+    onCreate() {},
     onDestroy() {}
   }
 </script>
 
 <style>
-  /* 全局样式：所有页面根节点复用 .page，即可获得全局米黄背景 */
   .app-root { flex-direction: column; }
 
+  /* 所有页面根节点复用 .page，获得全局米黄背景与纵向弹性布局 */
   .page {
     flex-direction: column;
     background-color: #FBF3E6;
@@ -27,17 +25,28 @@
     font-size: 32px;
     color: #8A6D3B;
     font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .h2 {
+    font-size: 24px;
+    color: #8A6D3B;
+    font-weight: 500;
     margin-bottom: 12px;
   }
   .sub {
     font-size: 20px;
     color: #B08A4F;
-    margin-bottom: 4px;
+    margin-bottom: 12px;
   }
   .text {
     font-size: 22px;
     color: #4A3B2A;
     line-height: 36px;
+  }
+  .small {
+    font-size: 18px;
+    color: #6B4F2A;
+    line-height: 30px;
   }
 
   .card {
@@ -48,23 +57,43 @@
     border: 1px solid #E4D5B7;
   }
 
+  /* BlueOS 不支持 flex-direction: row 和 flex 简写，
+     横向布局改用 position: relative + 绝对定位按钮 */
   .row {
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 10px;
+    position: relative;
+    width: 100%;
+    height: 76px;
+    margin-bottom: 12px;
   }
 
   .btn {
+    position: absolute;
+    top: 0;
+    width: 210px;
+    height: 68px;
     background-color: #F3E4C7;
     border-radius: 22px;
-    padding: 10px 0;
     border: 1px solid #D9C3A0;
     text-align: center;
-    flex-grow: 1;
-    margin: 0 5px;
+  }
+  .btn-left { left: 0; }
+  .btn-right { right: 0; }
+  .btn-full {
+    position: relative;
+    width: 100%;
+    height: 68px;
+    margin-bottom: 12px;
+    background-color: #F3E4C7;
+    border-radius: 22px;
+    border: 1px solid #D9C3A0;
+    text-align: center;
   }
   .btn-text {
     font-size: 20px;
+    color: #6B4F2A;
+  }
+  .btn-emoji {
+    font-size: 26px;
     color: #6B4F2A;
   }
 </style>
