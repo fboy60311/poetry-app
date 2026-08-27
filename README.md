@@ -47,10 +47,23 @@ poetry-app/
 
 ---
 
+## 📸 模拟运行效果
+
+下图模拟 vivo Watch GT 2（466×466 屏）上的实际界面：左侧**首页**（今日诗词 / 随机 / 分类 / 搜索 / 收藏入口），右侧**详情页**（正文 / 注释 / 译注 三 Tab 切换，全局古风米黄 `#FBF3E6` 主题）。
+
+![模拟运行效果](preview/screenshot.svg)
+
 ## 🌐 在线体验（Web Demo）
 
 无需安装，直接用浏览器打开 `preview/index.html` 即可体验完整交互（模拟 Watch GT 2 屏幕，含收藏持久化）。
-开启 GitHub Pages 后，可把该文件托管为公开链接，方便在作品集中嵌入。
+仓库根目录另含 `index.html` 项目主页，可作为 GitHub Pages 落地页。
+
+### 开启 GitHub Pages（让 Demo 在线可玩）
+1. 仓库 `Settings → Pages`
+2. `Source` 选 `Deploy from a branch`，`Branch` 选 `master`，文件夹 `/ (root)`，`Save`
+3. 约 1 分钟后访问：
+   - 项目主页：`https://<你的用户名>.github.io/blueos-poetry-watch/`
+   - 试玩 Demo：`https://<你的用户名>.github.io/blueos-poetry-watch/preview/`
 
 ---
 
