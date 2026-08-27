@@ -62,8 +62,8 @@ poetry-app/
 1. 仓库 `Settings → Pages`
 2. `Source` 选 `Deploy from a branch`，`Branch` 选 `master`，文件夹 `/ (root)`，`Save`
 3. 约 1 分钟后访问：
-   - 项目主页：`https://<你的用户名>.github.io/blueos-poetry-watch/`
-   - 试玩 Demo：`https://<你的用户名>.github.io/blueos-poetry-watch/preview/`
+   - 项目主页：`https://fboy60311.github.io/poetry-app/`
+   - 试玩 Demo：`https://fboy60311.github.io/poetry-app/preview/`
 
 ---
 
