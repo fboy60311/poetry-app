@@ -1,0 +1,45 @@
+<template>
+  <div class="page">
+    <text class="h1">搜索</text>
+    <input class="search-box" placeholder="标题 / 作者 / 关键词" onchange="onInput" value="{{ kw }}"></input>
+    <div class="card" for="item in result" :key="item.id" onclick="open(item.id)">
+      <text class="text">{{ item.title }} · {{ item.author }}</text>
+    </div>
+    <text class="sub" if="kw && result.length === 0">没有找到相关诗词</text>
+  </div>
+</template>
+
+<script>
+  import router from '@blueos.app.router'
+  import poems from '../../data/poems.js'
+
+  export default {
+    data: { kw: '', result: [] },
+    onInput(e) {
+      const v = (e && (e.value !== undefined ? e.value : e.text)) || ''
+      this.kw = v
+      const k = v.trim().toLowerCase()
+      if (!k) { this.result = []; return }
+      this.result = poems.filter(p =>
+        p.title.toLowerCase().includes(k) ||
+        p.author.toLowerCase().includes(k) ||
+        p.content.toLowerCase().includes(k)
+      )
+    },
+    open(id) {
+      router.push({ uri: 'pages/detail/detail?id=' + id })
+    }
+  }
+</script>
+
+<style>
+  .search-box {
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    border: 1px solid #D9C3A0;
+    padding: 8px 14px;
+    font-size: 20px;
+    color: #4A3B2A;
+    margin-bottom: 12px;
+  }
+</style>

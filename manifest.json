@@ -1,0 +1,25 @@
+{
+  "package": "com.fboy.gushici",
+  "name": "古诗词",
+  "icon": "/assets/images/logo.png",
+  "versionName": "1.0.0",
+  "versionCode": 1,
+  "minPlatformVersion": 3,
+  "config": {
+    "designWidth": 466,
+    "backgroundColor": "#FBF3E6"
+  },
+  "router": {
+    "entry": "pages/index/index",
+    "pages": {
+      "pages/index/index": { "component": "index" },
+      "pages/category/category": { "component": "category" },
+      "pages/list/list": { "component": "list" },
+      "pages/detail/detail": { "component": "detail" },
+      "pages/search/search": { "component": "search" },
+      "pages/favorites/favorites": { "component": "favorites" }
+    }
+  },
+  "deviceTypeList": ["watch", "watch-round"],
+  "appCategory": ["education"]
+}

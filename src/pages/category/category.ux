@@ -1,0 +1,48 @@
+<template>
+  <div class="page">
+    <text class="h1">分类浏览</text>
+    <div class="grid">
+      <div class="tile" for="it in items" onclick="openDynasty(it.value)">
+        <text class="big">📜</text>
+        <text class="lab">{{ it.label }} · {{ it.n }}首</text>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import router from '@blueos.app.router'
+  import poems from '../../data/poems.js'
+
+  const ORDER = ['先秦','周','汉','战国','魏晋','南北朝','唐','宋','元','明','清','近代']
+  const LABEL = {
+    '周':'周(诗经)','汉':'汉','战国':'战国','魏晋':'魏晋','南北朝':'南北朝',
+    '唐':'唐','宋':'宋','元':'元','明':'明','清':'清','近代':'近代','先秦':'先秦'
+  }
+
+  export default {
+    data: { items: [] },
+    onInit() {
+      const counts = {}
+      poems.forEach(p => { counts[p.dynasty] = (counts[p.dynasty] || 0) + 1 })
+      const dyn = Object.keys(counts).sort((a, b) => {
+        const ia = ORDER.indexOf(a), ib = ORDER.indexOf(b)
+        return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib)
+      })
+      const items = [{ value: 'all', label: '全部', n: poems.length }]
+      dyn.forEach(d => items.push({ value: d, label: LABEL[d] || d, n: counts[d] }))
+      this.items = items
+    },
+    openDynasty(v) {
+      router.push({ uri: 'pages/list/list?type=dynasty&value=' + encodeURIComponent(v) })
+    }
+  }
+</script>
+
+<style>
+  .grid { flex-direction: row; flex-wrap: wrap; justify-content: space-between; }
+  .tile { width: 48%; background-color: #FFFDF8; border: 1px solid #E4D5B7;
+    border-radius: 14px; padding: 14px; margin-bottom: 12px; align-items: center; }
+  .big { font-size: 30px; text-align: center; }
+  .lab { font-size: 19px; color: #6B4F2A; text-align: center; margin-top: 6px; }
+</style>

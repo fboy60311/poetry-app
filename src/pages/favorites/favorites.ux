@@ -1,0 +1,26 @@
+<template>
+  <div class="page">
+    <text class="h1">我的收藏</text>
+    <div class="card" for="item in list" :key="item.id" onclick="open(item.id)">
+      <text class="text">{{ item.title }} · {{ item.author }}</text>
+    </div>
+    <text class="sub" if="list.length === 0">还没有收藏，去详情页点“收藏”吧</text>
+  </div>
+</template>
+
+<script>
+  import router from '@blueos.app.router'
+  import poems from '../../data/poems.js'
+  import { getFavIds } from '../../utils/store.js'
+
+  export default {
+    data: { list: [] },
+    async onInit() {
+      const ids = await getFavIds()
+      this.list = poems.filter(p => ids.indexOf(p.id) >= 0)
+    },
+    open(id) {
+      router.push({ uri: 'pages/detail/detail?id=' + id })
+    }
+  }
+</script>

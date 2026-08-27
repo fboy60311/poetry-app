@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>古诗词 · Watch GT 2 预览原型</title>
+<style>
+  :root{
+    --bg:#FBF3E6; --card:#F3E4C7; --card2:#EFD9B8;
+    --ink:#4A3526; --ink2:#7A6753; --accent:#B5651D;
+    --line:#D8C3A0; --heart:#C0392B;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;height:100%;background:#222;display:flex;align-items:center;
+    justify-content:center;font-family:"STKaiti","KaiTi","Songti SC","SimSun",serif;}
+  .watch{
+    width:min(466px,94vw); aspect-ratio:1/1; background:var(--bg);
+    border-radius:46px; box-shadow:0 0 0 16px #161616,0 24px 70px rgba(0,0,0,.55);
+    overflow:hidden; position:relative; color:var(--ink);
+  }
+  .statusbar{position:absolute;top:0;left:0;right:0;height:26px;display:flex;
+    justify-content:space-between;align-items:center;padding:0 22px;font-size:12px;
+    color:var(--ink2);z-index:5;pointer-events:none;}
+  .view{position:absolute;inset:0;top:26px;padding:14px 16px 16px;display:none;
+    flex-direction:column;overflow-y:auto;}
+  .view.active{display:flex;animation:fade .22s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .view::-webkit-scrollbar{width:0;}
+  .topbar{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .back{font-size:18px;color:var(--accent);cursor:pointer;padding:2px 6px;user-select:none;}
+  .title{font-size:21px;font-weight:700;letter-spacing:2px;margin:6px 0 4px;}
+  .subtitle{font-size:12px;color:var(--ink2);margin:0 0 10px;letter-spacing:1px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:14px 12px;cursor:pointer;transition:transform .12s;text-align:center;}
+  .tile:active{transform:scale(.96);}
+  .tile .big{font-size:26px;}
+  .tile .lab{font-size:13px;color:var(--ink2);margin-top:8px;letter-spacing:1px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:14px;margin-bottom:10px;cursor:pointer;transition:transform .12s;}
+  .card:active{transform:scale(.98);}
+  .card .t{font-size:17px;font-weight:700;}
+  .card .m{font-size:12px;color:var(--ink2);margin-top:6px;}
+  .daily{background:linear-gradient(135deg,#F3E4C7,#EFD9B8);border:1px solid var(--line);
+    border-radius:18px;padding:16px;margin-bottom:14px;cursor:pointer;}
+  .daily .tag{font-size:11px;color:var(--accent);letter-spacing:2px;}
+  .daily .dt{font-size:20px;font-weight:700;margin:8px 0 6px;}
+  .daily .dm{font-size:13px;color:var(--ink2);}
+  .detail .dt{font-size:24px;font-weight:700;letter-spacing:2px;}
+  .detail .dm{font-size:13px;color:var(--ink2);margin:6px 0 14px;}
+  .content{font-size:19px;line-height:2.1;letter-spacing:2px;white-space:pre-line;}
+  .content.vert{writing-mode:vertical-rl;text-orientation:upright;height:300px;
+    line-height:2.4;letter-spacing:6px;margin:0 auto;}
+  .note{font-size:13px;color:var(--ink2);line-height:1.85;margin-top:14px;
+    border-top:1px dashed var(--line);padding-top:10px;letter-spacing:1px;white-space:pre-line;}
+  .toolbar{display:flex;gap:10px;margin-top:auto;padding-top:12px;}
+  .btn{flex:1;background:var(--card2);border:1px solid var(--line);border-radius:14px;
+    padding:12px;text-align:center;font-size:14px;color:var(--ink);cursor:pointer;
+    letter-spacing:1px;}
+  .btn:active{transform:scale(.96);}
+  .btn.on{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .searchbox{background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:10px 14px;font-size:15px;margin-bottom:12px;color:var(--ink);outline:none;
+    width:100%;font-family:inherit;}
+  .empty{text-align:center;color:var(--ink2);font-size:14px;margin-top:40px;letter-spacing:1px;}
+  .pill{display:inline-block;background:var(--card2);border:1px solid var(--line);
+    border-radius:20px;padding:6px 12px;font-size:12px;color:var(--ink2);margin-right:6px;}
+  .tabs{display:flex;gap:6px;margin:6px 0 12px;}
+  .tab{flex:1;text-align:center;font-size:13px;padding:9px 0;border:1px solid var(--line);
+    border-radius:12px;color:var(--ink2);cursor:pointer;letter-spacing:1px;background:var(--card);}
+  .tab.on{background:var(--accent);color:#fff;border-color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="watch">
+  <div class="statusbar"><span id="clock">08:27</span><span>♥ 86%</span></div>
+
+  <!-- 首页 -->
+  <section class="view active" id="home">
+    <div class="title">古诗词</div>
+    <div class="subtitle">腕上诗心 · 每日一阅</div>
+    <div class="daily" onclick="goDaily()">
+      <div class="tag">今日诗词</div>
+      <div class="dt" id="dTitle"></div>
+      <div class="dm" id="dMeta"></div>
+    </div>
+    <div class="grid">
+      <div class="tile" onclick="showView('category')">
+        <div class="big">📚</div><div class="lab">按朝代</div>
+      </div>
+      <div class="tile" onclick="randomPoem()">
+        <div class="big">🎲</div><div class="lab">随机一首</div>
+      </div>
+      <div class="tile" onclick="showView('search')">
+        <div class="big">🔍</div><div class="lab">搜索</div>
+      </div>
+      <div class="tile" onclick="showView('favorites')">
+        <div class="big">❤️</div><div class="lab">我的收藏</div>
+      </div>
+    </div>
+    <div class="subtitle">热门作者</div>
+    <div id="hotAuthors"></div>
+  </section>
+
+  <!-- 分类 -->
+  <section class="view" id="category">
+    <div class="topbar"><span class="back" onclick="showView('home')">‹</span></div>
+    <div class="title">按朝代浏览</div>
+    <div class="grid" id="dynasties"></div>
+  </section>
+
+  <!-- 列表 -->
+  <section class="view" id="list">
+    <div class="topbar"><span class="back" onclick="showView('category')">‹</span></div>
+    <div class="title" id="listTitle"></div>
+    <div class="subtitle" id="listCount"></div>
+    <div id="listBody"></div>
+  </section>
+
+  <!-- 详情 -->
+  <section class="view detail" id="detail">
+    <div class="topbar"><span class="back" onclick="backFromDetail()">‹</span></div>
+    <div class="dt" id="pTitle"></div>
+    <div class="dm" id="pMeta"></div>
+    <div class="tabs">
+      <div class="tab on" id="tabText" onclick="setTab('text')">正文</div>
+      <div class="tab" id="tabZhu" onclick="setTab('zhu')">注释</div>
+      <div class="tab" id="tabNote" onclick="setTab('note')">译注</div>
+    </div>
+    <div class="content" id="pContent"></div>
+    <div class="note" id="pZhushi" style="display:none"></div>
+    <div class="note" id="pNote" style="display:none"></div>
+    <div class="toolbar">
+      <div class="btn" id="favBtn" onclick="toggleFav()">❤ 收藏</div>
+      <div class="btn" id="oriBtn" onclick="toggleOrient()">竖排</div>
+    </div>
+  </section>
+
+  <!-- 搜索 -->
+  <section class="view" id="search">
+    <div class="topbar"><span class="back" onclick="showView('home')">‹</span></div>
+    <div class="title">搜索</div>
+    <input class="searchbox" id="searchInput" placeholder="输入标题 / 作者 / 诗句…"
+      oninput="doSearch()" />
+    <div id="searchBody"></div>
+  </section>
+
+  <!-- 收藏 -->
+  <section class="view" id="favorites">
+    <div class="topbar"><span class="back" onclick="showView('home')">‹</span></div>
+    <div class="title">我的收藏</div>
+    <div class="subtitle" id="favCount"></div>
+    <div id="favBody"></div>
+  </section>
+</div>
+
+<script src="poems-data.js"></script>
+<script>
+// 诗词数据见 poems-data.js（全局变量 POEMS）
+
+let favs = JSON.parse(localStorage.getItem('gt2_favs')||'[]');
+let curPoem = null;
+
+const $ = id => document.getElementById(id);
+function showView(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  $(name).classList.add('active');
+  if(name==='favorites') renderFavs();
+  if(name==='category') renderDynasties();
+}
+function backFromDetail(){
+  const from = curPoem._from || 'home';
+  showView(from);
+}
+
+function dailyPoem(){
+  const d=new Date();
+  const dayOfYear=Math.floor((d-new Date(d.getFullYear(),0,0))/86400000);
+  return POEMS[dayOfYear%POEMS.length];
+}
+function goDaily(){ openPoem(dailyPoem(),'home'); }
+
+function randomPoem(){
+  const p=POEMS[Math.floor(Math.random()*POEMS.length)];
+  openPoem(p,'home');
+}
+
+function openPoem(p,from){
+  curPoem={...p,_from:from};
+  $('pTitle').textContent=p.title;
+  $('pMeta').textContent=p.dynasty+' · '+p.author;
+  $('pContent').textContent=p.content;
+  $('pContent').classList.remove('vert');
+  $('oriBtn').textContent='竖排';
+  $('pZhushi').textContent=p.zhushi?('【注释】\n'+p.zhushi):'（暂无注释）';
+  $('pNote').textContent=p.note?('【译注】\n'+p.note):'（暂无译注）';
+  setTab('text');
+  updateFavBtn();
+  showView('detail');
+}
+function setTab(t){
+  $('tabText').classList.toggle('on',t==='text');
+  $('tabZhu').classList.toggle('on',t==='zhu');
+  $('tabNote').classList.toggle('on',t==='note');
+  $('pContent').style.display=t==='text'?'block':'none';
+  $('pZhushi').style.display=t==='zhu'?'block':'none';
+  $('pNote').style.display=t==='note'?'block':'none';
+  if(t!=='text') $('pContent').classList.remove('vert');
+}
+function openPoemById(id,from){
+  const p=POEMS.find(x=>x.id===id);
+  if(p) openPoem(p,from);
+}
+
+function toggleFav(){
+  const i=favs.indexOf(curPoem.id);
+  if(i>=0) favs.splice(i,1); else favs.push(curPoem.id);
+  localStorage.setItem('gt2_favs',JSON.stringify(favs));
+  updateFavBtn();
+  if($('favorites').classList.contains('active')) renderFavs();
+}
+function updateFavBtn(){
+  const on=favs.indexOf(curPoem.id)>=0;
+  $('favBtn').textContent=on?'❤ 已收藏':'❤ 收藏';
+  $('favBtn').classList.toggle('on',on);
+}
+function toggleOrient(){
+  const c=$('pContent');
+  c.classList.toggle('vert');
+  $('oriBtn').textContent=c.classList.contains('vert')?'横排':'竖排';
+}
+
+function renderDynasties(){
+  const order={'周':0,'汉':1,'战国':1,'东汉':2,'东晋':3,'南朝':3,'北朝':3,'唐':4,'南唐':4,'宋':5,'元':6,'明':7,'清':8,'近代':9};
+  const dyn=[...new Set(POEMS.map(p=>p.dynasty))].sort((a,b)=>(order[a]??99)-(order[b]??99));
+  const items=[{d:'all',n:POEMS.length,label:'全部 · '+POEMS.length+'首'}];
+  dyn.forEach(d=>items.push({d,n:POEMS.filter(p=>p.dynasty===d).length,label:d+' · '+POEMS.filter(p=>p.dynasty===d).length+'首'}));
+  $('dynasties').innerHTML=items.map(it=>
+    `<div class="tile" onclick="openList('${it.d}')">
+      <div class="big">📜</div><div class="lab">${it.label}</div></div>`).join('');
+}
+
+function openList(dynasty){
+  $('listTitle').textContent=(dynasty==='all'?'全部':dynasty+'代')+'诗词';
+  const list=dynasty==='all'?POEMS:POEMS.filter(p=>p.dynasty===dynasty);
+  $('listCount').textContent='共 '+list.length+' 首';
+  $('listBody').innerHTML=list.map(p=>
+    `<div class="card" onclick="openPoemById(${p.id},'list')">
+       <div class="t">${p.title}</div><div class="m">${p.author}</div></div>`).join('');
+  showView('list');
+}
+
+function renderFavs(){
+  $('favCount').textContent='共 '+favs.length+' 首';
+  if(!favs.length){$('favBody').innerHTML='<div class="empty">还没有收藏，去首页点 ❤ 吧</div>';return;}
+  $('favBody').innerHTML=favs.map(id=>{
+    const p=POEMS.find(x=>x.id===id); if(!p)return'';
+    return `<div class="card" onclick="openPoemById(${p.id},'favorites')">
+      <div class="t">${p.title}</div><div class="m">${p.dynasty} · ${p.author}</div></div>`;
+  }).join('');
+}
+
+function doSearch(){
+  const q=$('searchInput').value.trim();
+  if(!q){$('searchBody').innerHTML='<div class="empty">输入关键词开始搜索</div>';return;}
+  const r=POEMS.filter(p=>(p.title+p.author+p.content+p.dynasty).includes(q));
+  if(!r.length){$('searchBody').innerHTML='<div class="empty">没有找到相关诗词</div>';return;}
+  $('searchBody').innerHTML=r.map(p=>
+    `<div class="card" onclick="openPoemById(${p.id},'search')">
+       <div class="t">${p.title}</div><div class="m">${p.dynasty} · ${p.author}</div></div>`).join('');
+}
+
+function renderHome(){
+  const dp=dailyPoem();
+  $('dTitle').textContent=dp.title;
+  $('dMeta').textContent=dp.dynasty+' · '+dp.author;
+  const authors=[...new Set(POEMS.map(p=>p.author))].slice(0,6);
+  $('hotAuthors').innerHTML=authors.map(a=>
+    `<span class="pill">${a}</span>`).join('');
+}
+
+function tick(){
+  const d=new Date();
+  $('clock').textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+}
+tick(); setInterval(tick,10000);
+renderHome();
+</script>
+</body>
+</html>

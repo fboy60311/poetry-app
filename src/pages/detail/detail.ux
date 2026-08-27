@@ -1,0 +1,69 @@
+<template>
+  <div class="page">
+    <text class="h1">{{ poem.title }}</text>
+    <text class="sub">{{ poem.dynasty }} · {{ poem.author }}</text>
+
+    <div class="tabs">
+      <div class="tab {{ tab==='content' ? 'on' : '' }}" onclick="setTab('content')"><text class="tab-t">正文</text></div>
+      <div class="tab {{ tab==='zhushi' ? 'on' : '' }}" onclick="setTab('zhushi')"><text class="tab-t">注释</text></div>
+      <div class="tab {{ tab==='note' ? 'on' : '' }}" onclick="setTab('note')"><text class="tab-t">译注</text></div>
+    </div>
+
+    <div class="card scroll">
+      <block if="tab==='content'">
+        <text class="text {{ orient==='vert' ? 'vert' : '' }}" for="line in lines">{{ line }}</text>
+      </block>
+      <block if="tab==='zhushi'">
+        <text class="text" for="line in zhushiLines">{{ line }}</text>
+      </block>
+      <block if="tab==='note'">
+        <text class="text" for="line in noteLines">{{ line }}</text>
+      </block>
+    </div>
+
+    <div class="row">
+      <div class="btn" onclick="toggle"><text class="btn-text">{{ fav ? '已收藏' : '收藏' }}</text></div>
+      <div class="btn" onclick="toggleOrient"><text class="btn-text">{{ orient==='vert' ? '横排' : '竖排' }}</text></div>
+      <div class="btn" onclick="goBack"><text class="btn-text">返回</text></div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import router from '@blueos.app.router'
+  import poems from '../../data/poems.js'
+  import { toggleFav, isFav } from '../../utils/store.js'
+
+  export default {
+    data: {
+      poem: {}, fav: false, pid: 0,
+      tab: 'content', orient: 'horiz',
+      lines: [], zhushiLines: [], noteLines: []
+    },
+    async onInit() {
+      const id = Number(this.id) || 1
+      this.pid = id
+      const p = poems.find(x => x.id === id) || poems[0]
+      this.poem = p
+      this.lines = (p.content || '').split('\n')
+      this.zhushiLines = (p.zhushi || '').split('\n').filter(Boolean)
+      this.noteLines = (p.note || '').split('\n').filter(Boolean)
+      this.fav = await isFav(id)
+    },
+    setTab(t) { this.tab = t },
+    toggleOrient() { this.orient = this.orient === 'vert' ? 'horiz' : 'vert' },
+    async toggle() { await toggleFav(this.pid); this.fav = !this.fav },
+    goBack() { router.back() }
+  }
+</script>
+
+<style>
+  .tabs { flex-direction: row; margin-bottom: 12px; }
+  .tab { flex: 1; padding: 8px 0; margin: 0 4px; border-radius: 16px;
+    background-color: #FFFDF8; border: 1px solid #E4D5B7; text-align: center; }
+  .tab.on { background-color: #F3E4C7; border-color: #D9C3A0; }
+  .tab-t { font-size: 20px; color: #6B4F2A; }
+  .scroll { flex: 1; }
+  .text.vert { writing-mode: vertical-rl; text-orientation: upright;
+    font-size: 24px; line-height: 1.4; }
+</style>

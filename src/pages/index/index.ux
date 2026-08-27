@@ -1,0 +1,44 @@
+<template>
+  <div class="page">
+    <text class="h1">古诗词</text>
+
+    <div class="card" onclick="openToday">
+      <text class="sub">今日诗词</text>
+      <text class="text">{{ today.title }} · {{ today.author }}</text>
+    </div>
+
+    <div class="row">
+      <div class="btn" onclick="goRandom"><text class="btn-text">随机一首</text></div>
+      <div class="btn" onclick="goCategory"><text class="btn-text">分类浏览</text></div>
+    </div>
+    <div class="row">
+      <div class="btn" onclick="goFavorites"><text class="btn-text">我的收藏</text></div>
+      <div class="btn" onclick="goSearch"><text class="btn-text">搜索</text></div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import router from '@blueos.app.router'
+  import poems from '../../data/poems.js'
+
+  export default {
+    data: {
+      today: {}
+    },
+    onInit() {
+      const d = new Date()
+      this.today = poems[d.getDate() % poems.length]
+    },
+    openToday() {
+      router.push({ uri: 'pages/detail/detail?id=' + this.today.id })
+    },
+    goRandom() {
+      const p = poems[Math.floor(Math.random() * poems.length)]
+      router.push({ uri: 'pages/detail/detail?id=' + p.id })
+    },
+    goCategory() { router.push({ uri: 'pages/category/category' }) },
+    goFavorites() { router.push({ uri: 'pages/favorites/favorites' }) },
+    goSearch() { router.push({ uri: 'pages/search/search' }) }
+  }
+</script>
