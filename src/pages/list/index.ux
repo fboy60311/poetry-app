@@ -12,7 +12,7 @@
   import poems from '../../data/poems.js'
 
   export default {
-    data: { list: [], title: '' },
+    data: { list: [], title: '', type: '', value: '' },
     onInit() {
       const type = this.type || 'dynasty'
       const value = (this.value ? decodeURIComponent(this.value) : '唐')
