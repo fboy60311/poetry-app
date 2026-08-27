@@ -37,7 +37,7 @@
   .text {
     font-size: 22px;
     color: #4A3B2A;
-    line-height: 1.6;
+    line-height: 36px;
   }
 
   .card {
@@ -60,7 +60,7 @@
     padding: 10px 0;
     border: 1px solid #D9C3A0;
     text-align: center;
-    flex: 1;
+    flex-grow: 1;
     margin: 0 5px;
   }
   .btn-text {

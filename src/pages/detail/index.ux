@@ -72,7 +72,7 @@
 <style>
   .tabs { flex-direction: row; margin-bottom: 12px; }
   .tab {
-    flex: 1; padding: 8px 0; margin: 0 4px; border-radius: 16px;
+    flex-grow: 1; padding: 8px 0; margin: 0 4px; border-radius: 16px;
     background-color: #FFFDF8; border: 1px solid #E4D5B7; text-align: center;
   }
   .tab.on { background-color: #F3E4C7; border-color: #D9C3A0; }
@@ -84,6 +84,6 @@
   .poem-lines { flex-direction: column; }
   .line { flex-direction: column; margin-bottom: 8px; }
   .text {
-    font-size: 22px; line-height: 1.6; color: #4A3B2A;
+    font-size: 22px; line-height: 36px; color: #4A3B2A;
   }
 </style>
