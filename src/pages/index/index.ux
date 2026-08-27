@@ -1,8 +1,10 @@
 <template>
   <div class="page">
-    <div class="home-wrap">
-      <text class="h1">古诗词</text>
-    </div>
+    <scroll scroll-y class="scroll-box">
+      <div class="home-wrap">
+        <text class="h1">古诗词</text>
+      </div>
+    </scroll>
   </div>
 </template>
 
