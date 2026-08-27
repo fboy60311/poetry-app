@@ -10,20 +10,11 @@
     </div>
 
     <div class="card scroll">
-      <block if="tab==='content'">
-        <text class="text {{ orient==='vert' ? 'vert' : '' }}" for="line in lines">{{ line }}</text>
-      </block>
-      <block if="tab==='zhushi'">
-        <text class="text" for="line in zhushiLines">{{ line }}</text>
-      </block>
-      <block if="tab==='note'">
-        <text class="text" for="line in noteLines">{{ line }}</text>
-      </block>
+      <text class="text" lines="100">{{ displayText }}</text>
     </div>
 
     <div class="row">
       <div class="btn" onclick="toggle"><text class="btn-text">{{ fav ? '已收藏' : '收藏' }}</text></div>
-      <div class="btn" onclick="toggleOrient"><text class="btn-text">{{ orient==='vert' ? '横排' : '竖排' }}</text></div>
       <div class="btn" onclick="goBack"><text class="btn-text">返回</text></div>
     </div>
   </div>
@@ -37,21 +28,24 @@
   export default {
     data: {
       poem: {}, fav: false, pid: 0,
-      tab: 'content', orient: 'horiz',
-      lines: [], zhushiLines: [], noteLines: []
+      tab: 'content',
+      displayText: ''
     },
     async onInit() {
       const id = Number(this.id) || 1
       this.pid = id
       const p = poems.find(x => x.id === id) || poems[0]
       this.poem = p
-      this.lines = (p.content || '').split('\n')
-      this.zhushiLines = (p.zhushi || '').split('\n').filter(Boolean)
-      this.noteLines = (p.note || '').split('\n').filter(Boolean)
       this.fav = await isFav(id)
+      this.updateText()
     },
-    setTab(t) { this.tab = t },
-    toggleOrient() { this.orient = this.orient === 'vert' ? 'horiz' : 'vert' },
+    updateText() {
+      const p = this.poem || {}
+      if (this.tab === 'content') this.displayText = p.content || ''
+      else if (this.tab === 'zhushi') this.displayText = p.zhushi || '暂无注释'
+      else this.displayText = p.note || '暂无译注'
+    },
+    setTab(t) { this.tab = t; this.updateText() },
     async toggle() { await toggleFav(this.pid); this.fav = !this.fav },
     goBack() { router.back() }
   }
@@ -64,6 +58,5 @@
   .tab.on { background-color: #F3E4C7; border-color: #D9C3A0; }
   .tab-t { font-size: 20px; color: #6B4F2A; }
   .scroll { flex: 1; }
-  .text.vert { writing-mode: vertical-rl; text-orientation: upright;
-    font-size: 24px; line-height: 1.4; }
+  .text { font-size: 24px; line-height: 1.6; color: #4A3B2A; letter-spacing: 1px; }
 </style>

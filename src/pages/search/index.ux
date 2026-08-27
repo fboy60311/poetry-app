@@ -2,10 +2,10 @@
   <div class="page">
     <text class="h1">搜索</text>
     <input class="search-box" placeholder="标题 / 作者 / 关键词" onchange="onInput" value="{{ kw }}"></input>
-    <div class="card" for="item in result" :key="item.id" onclick="open(item.id)">
+    <div class="card" for="{{item in result}}" onclick="open(item.id)">
       <text class="text">{{ item.title }} · {{ item.author }}</text>
     </div>
-    <text class="sub" if="kw && result.length === 0">没有找到相关诗词</text>
+    <text class="sub" if="{{ kw && result.length === 0 }}">没有找到相关诗词</text>
   </div>
 </template>
 

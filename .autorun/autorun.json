@@ -1,0 +1,19 @@
+{
+  "list": [
+    {
+      "pageRouterEvent": "push",
+      "pagePath": "/pages/detail",
+      "pageParams": "id=29",
+      "events": [
+        {
+          "delay": 3149
+        }
+      ]
+    }
+  ],
+  "capture": true,
+  "size": {
+    "width": 466,
+    "height": 466
+  }
+}

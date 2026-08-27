@@ -1,10 +1,10 @@
 <template>
   <div class="page">
     <text class="h1">我的收藏</text>
-    <div class="card" for="item in list" :key="item.id" onclick="open(item.id)">
+    <div class="card" for="{{item in list}}" onclick="open(item.id)">
       <text class="text">{{ item.title }} · {{ item.author }}</text>
     </div>
-    <text class="sub" if="list.length === 0">还没有收藏，去详情页点“收藏”吧</text>
+    <text class="sub" if="{{ list.length === 0 }}">还没有收藏，去详情页点“收藏”吧</text>
   </div>
 </template>
 
