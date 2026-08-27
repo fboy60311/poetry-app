@@ -26,7 +26,6 @@
       router.push({ uri: '/pages/detail?id=' + id })
     }
   }
-}
 </script>
 
 <style>
