@@ -29,3 +29,6 @@ release/
 
 # BlueOS Studio local IDE settings
 .ide/
+
+# BlueOS Studio auto-run test artifacts
+.autorun/
