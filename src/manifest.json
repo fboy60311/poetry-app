@@ -6,7 +6,9 @@
   "versionCode": 1,
   "minPlatformVersion": 3,
   "config": {
-    "designWidth": 466,
+    "designWidth": 466
+  },
+  "display": {
     "backgroundColor": "#FBF3E6"
   },
   "router": {

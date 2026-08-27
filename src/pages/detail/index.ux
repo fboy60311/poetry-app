@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <scroll scroll-y class="scroll-box">
+    <scroll scroll-y="true" class="scroll-box">
       <div class="wrap">
         <text class="h1">{{ title }}</text>
         <text class="sub">{{ dynasty }} · {{ author }}</text>

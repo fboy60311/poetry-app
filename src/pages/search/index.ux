@@ -2,7 +2,7 @@
   <div class="page">
     <text class="h1">搜索</text>
     <input class="search-box" placeholder="标题 / 作者 / 关键词" onchange="onInput" value="{{ kw }}"></input>
-    <scroll scroll-y class="scroll-box">
+    <scroll scroll-y="true" class="scroll-box">
       <div class="wrap">
         <div class="card" for="{{item in result}}" onclick="open(item.id)">
           <text class="text">{{ item.title }} · {{ item.author }}</text>

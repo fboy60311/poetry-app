@@ -1,23 +1,149 @@
 <template>
   <div class="page">
-    <scroll scroll-y class="scroll-box">
+    <scroll scroll-y="true" class="scroll-box">
       <div class="home-wrap">
         <text class="h1">古诗词</text>
+        <text class="sub">腕上诗心 · 每日一阅</text>
+
+        <div class="card" onclick="openToday">
+          <text class="card-title">今日诗词</text>
+          <text class="text">{{ today.title }}</text>
+          <text class="small">{{ today.dynasty }} · {{ today.author }}</text>
+        </div>
+
+        <div class="btn" onclick="goCategory"><text class="btn-text">按朝代</text></div>
+        <div class="btn" onclick="goRandom"><text class="btn-text">随机一首</text></div>
+        <div class="btn" onclick="goSearch"><text class="btn-text">搜索</text></div>
+        <div class="btn" onclick="goFav"><text class="btn-text">我的收藏</text></div>
+
+        <text class="sub sec">热门作者</text>
+        <div class="author" for="{{a in hotAuthors}}" onclick="goAuthor(a.name)">
+          <text class="text">{{ a.name }}（{{ a.count }}首）</text>
+        </div>
       </div>
     </scroll>
   </div>
 </template>
 
 <script>
+  import router from '@blueos.app.appmanager.router'
+  import poemsIndex from '../../data/poems-index.js'
+
+  function pickDaily() {
+    const day = new Date().getDate() % poemsIndex.length
+    return poemsIndex[day]
+  }
+
+  function topAuthors(n) {
+    const counts = {}
+    poemsIndex.forEach(p => { counts[p.author] = (counts[p.author] || 0) + 1 })
+    const arr = Object.keys(counts).map(name => ({ name: name, count: counts[name] }))
+    arr.sort((a, b) => b.count - a.count)
+    return arr.slice(0, n)
+  }
+
   export default {
-    onInit() {}
+    data: {
+      today: { id: 1, title: '', author: '', dynasty: '' },
+      hotAuthors: []
+    },
+    onInit() {
+      this.today = pickDaily()
+      this.hotAuthors = topAuthors(6)
+    },
+    openToday() {
+      router.push({ uri: '/pages/detail?id=' + this.today.id })
+    },
+    goCategory() {
+      router.push({ uri: '/pages/category' })
+    },
+    goRandom() {
+      const p = poemsIndex[Math.floor(Math.random() * poemsIndex.length)]
+      router.push({ uri: '/pages/detail?id=' + p.id })
+    },
+    goSearch() {
+      router.push({ uri: '/pages/search' })
+    },
+    goFav() {
+      router.push({ uri: '/pages/favorites' })
+    },
+    goAuthor(name) {
+      router.push({ uri: '/pages/list?type=author&value=' + encodeURIComponent(name) })
+    }
   }
 </script>
 
 <style>
   .home-wrap {
     flex-direction: column;
-    align-items: center;
     width: 100%;
+    padding: 24px 20px;
+  }
+  .h1 {
+    font-size: 32px;
+    color: #8A6D3B;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .sub {
+    font-size: 20px;
+    color: #B08A4F;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .sub.sec {
+    margin-top: 8px;
+  }
+  .card {
+    flex-direction: column;
+    background-color: #FFFDF8;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 14px;
+    border: 1px solid #E4D5B7;
+    width: 100%;
+  }
+  .card-title {
+    font-size: 20px;
+    color: #B08A4F;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .text {
+    font-size: 22px;
+    color: #4A3B2A;
+    line-height: 36px;
+    text-align: center;
+  }
+  .small {
+    font-size: 18px;
+    color: #6B4F2A;
+    line-height: 30px;
+    text-align: center;
+  }
+  .btn {
+    flex-direction: column;
+    width: 100%;
+    height: 60px;
+    background-color: #F3E4C7;
+    border-radius: 22px;
+    border: 1px solid #D9C3A0;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .btn-text {
+    font-size: 22px;
+    color: #6B4F2A;
+    text-align: center;
+  }
+  .author {
+    flex-direction: column;
+    width: 100%;
+    background-color: #FFFDF8;
+    border: 1px solid #E4D5B7;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
   }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <text class="h1">我的收藏</text>
-    <scroll scroll-y class="scroll-box">
+    <scroll scroll-y="true" class="scroll-box">
       <div class="wrap">
         <div class="card" for="{{item in list}}" onclick="open(item.id)">
           <text class="text">{{ item.title }} · {{ item.author }}</text>
