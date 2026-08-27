@@ -1,30 +1,28 @@
 <template>
   <div class="page">
     <scroll scroll-y class="scroll-box">
-      <text class="h1">古诗词</text>
-      <text class="sub">腕上诗心 · 每日一阅</text>
+      <div class="home-wrap">
+        <text class="h1">古诗词</text>
+        <text class="sub">腕上诗心 每日一阅</text>
 
-      <div class="today-card" onclick="openToday">
-        <text class="today-label">今日诗词</text>
-        <text class="today-title">{{ today.title }}</text>
-        <text class="today-author">{{ today.dynasty }} · {{ today.author }}</text>
-      </div>
+        <div class="today-card" onclick="openToday">
+          <text class="today-label">今日诗词</text>
+          <text class="today-title">{{ todayTitle }}</text>
+          <text class="today-author">{{ todayMeta }}</text>
+        </div>
 
-      <div class="btn" onclick="goCategory">
-        <text class="btn-emoji">📜</text>
-        <text class="btn-text">按朝代</text>
-      </div>
-      <div class="btn" onclick="goRandom">
-        <text class="btn-emoji">🎲</text>
-        <text class="btn-text">随机一首</text>
-      </div>
-      <div class="btn" onclick="goSearch">
-        <text class="btn-emoji">🔍</text>
-        <text class="btn-text">搜索</text>
-      </div>
-      <div class="btn" onclick="goFavorites">
-        <text class="btn-emoji">❤️</text>
-        <text class="btn-text">我的收藏</text>
+        <div class="btn" onclick="goCategory">
+          <text class="btn-text">按朝代</text>
+        </div>
+        <div class="btn" onclick="goRandom">
+          <text class="btn-text">随机一首</text>
+        </div>
+        <div class="btn" onclick="goSearch">
+          <text class="btn-text">搜索</text>
+        </div>
+        <div class="btn" onclick="goFavorites">
+          <text class="btn-text">我的收藏</text>
+        </div>
       </div>
     </scroll>
   </div>
@@ -32,21 +30,26 @@
 
 <script>
   import router from '@blueos.app.appmanager.router'
-  import poems from '../../data/poems.js'
+  import poemsIndex from '../../data/poems-index.js'
 
   export default {
     data: {
-      today: {}
+      todayTitle: '',
+      todayMeta: '',
+      todayId: 1
     },
     onInit() {
       const d = new Date()
-      this.today = poems[d.getDate() % poems.length]
+      const p = poemsIndex[d.getDate() % poemsIndex.length]
+      this.todayId = p.id
+      this.todayTitle = p.title
+      this.todayMeta = p.dynasty + ' · ' + p.author
     },
     openToday() {
-      router.push({ uri: '/pages/detail?id=' + this.today.id })
+      router.push({ uri: '/pages/detail?id=' + this.todayId })
     },
     goRandom() {
-      const p = poems[Math.floor(Math.random() * poems.length)]
+      const p = poemsIndex[Math.floor(Math.random() * poemsIndex.length)]
       router.push({ uri: '/pages/detail?id=' + p.id })
     },
     goCategory() { router.push({ uri: '/pages/category' }) },
@@ -56,7 +59,9 @@
 </script>
 
 <style>
-  .scroll-box { height: 466px; }
+  .home-wrap {
+    flex-direction: column;
+  }
   .today-card {
     background-color: #F3E4C7;
     border-radius: 14px;

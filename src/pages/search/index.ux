@@ -3,8 +3,10 @@
     <text class="h1">搜索</text>
     <input class="search-box" placeholder="标题 / 作者 / 关键词" onchange="onInput" value="{{ kw }}"></input>
     <scroll scroll-y class="scroll-box">
-      <div class="card" for="{{item in result}}" onclick="open(item.id)">
-        <text class="text">{{ item.title }} · {{ item.author }}</text>
+      <div class="wrap">
+        <div class="card" for="{{item in result}}" onclick="open(item.id)">
+          <text class="text">{{ item.title }} · {{ item.author }}</text>
+        </div>
       </div>
     </scroll>
     <text class="sub" if="{{ kw && result.length === 0 }}">没有找到相关诗词</text>
@@ -13,7 +15,9 @@
 
 <script>
   import router from '@blueos.app.appmanager.router'
-  import poems from '../../data/poems.js'
+  import poemsIndex from '../../data/poems-index.js'
+
+  const PAGE_SIZE = 20
 
   export default {
     data: { kw: '', result: [] },
@@ -22,11 +26,11 @@
       this.kw = v
       const k = v.trim().toLowerCase()
       if (!k) { this.result = []; return }
-      this.result = poems.filter(p =>
+      const all = poemsIndex.filter(p =>
         p.title.toLowerCase().includes(k) ||
-        p.author.toLowerCase().includes(k) ||
-        p.content.toLowerCase().includes(k)
+        p.author.toLowerCase().includes(k)
       )
+      this.result = all.slice(0, PAGE_SIZE)
     },
     open(id) {
       router.push({ uri: '/pages/detail?id=' + id })
@@ -44,5 +48,6 @@
     color: #4A3B2A;
     margin-bottom: 12px;
   }
+  .wrap { flex-direction: column; }
   .scroll-box { height: 300px; }
 </style>

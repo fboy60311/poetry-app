@@ -1,25 +1,27 @@
 <template>
   <div class="page">
     <scroll scroll-y class="scroll-box">
-      <text class="h1">{{ poem.title }}</text>
-      <text class="sub">{{ poem.dynasty }} · {{ poem.author }}</text>
+      <div class="wrap">
+        <text class="h1">{{ title }}</text>
+        <text class="sub">{{ dynasty }} · {{ author }}</text>
 
-      <div class="btn {{ tab==='content' ? 'on' : '' }}" onclick="setTab('content')">
-        <text class="btn-text">正文</text>
-      </div>
-      <div class="btn {{ tab==='zhushi' ? 'on' : '' }}" onclick="setTab('zhushi')">
-        <text class="btn-text">注释</text>
-      </div>
-      <div class="btn {{ tab==='note' ? 'on' : '' }}" onclick="setTab('note')">
-        <text class="btn-text">译注</text>
-      </div>
+        <div class="btn {{ tab==='content' ? 'on' : '' }}" onclick="setTab('content')">
+          <text class="btn-text">正文</text>
+        </div>
+        <div class="btn {{ tab==='zhushi' ? 'on' : '' }}" onclick="setTab('zhushi')">
+          <text class="btn-text">注释</text>
+        </div>
+        <div class="btn {{ tab==='note' ? 'on' : '' }}" onclick="setTab('note')">
+          <text class="btn-text">译注</text>
+        </div>
 
-      <div class="card">
-        <text class="text line" for="{{line in lines}}">{{ line }}</text>
-      </div>
+        <div class="card">
+          <text class="text line" for="{{line in lines}}">{{ line }}</text>
+        </div>
 
-      <div class="btn" onclick="toggle"><text class="btn-text">{{ fav ? '已收藏' : '收藏' }}</text></div>
-      <div class="btn" onclick="goBack"><text class="btn-text">返回</text></div>
+        <div class="btn" onclick="toggle"><text class="btn-text">{{ fav ? '已收藏' : '收藏' }}</text></div>
+        <div class="btn" onclick="goBack"><text class="btn-text">返回</text></div>
+      </div>
     </scroll>
   </div>
 </template>
@@ -29,11 +31,22 @@
   import poems from '../../data/poems.js'
   import { toggleFav, isFav } from '../../utils/store.js'
 
+  function pickText(p, key) {
+    const t = p[key] || ''
+    const arr = t.split('\n').map(s => s.trim()).filter(s => s.length > 0)
+    return arr.length > 0 ? arr : ['暂无内容']
+  }
+
   export default {
     data: {
       id: '',
       pid: 0,
-      poem: {},
+      title: '',
+      author: '',
+      dynasty: '',
+      content: '',
+      zhushi: '',
+      note: '',
       fav: false,
       tab: 'content',
       lines: []
@@ -42,18 +55,17 @@
       const id = Number(this.id) || 1
       this.pid = id
       const p = poems.find(x => x.id === id) || poems[0]
-      this.poem = p
+      this.title = p.title
+      this.author = p.author
+      this.dynasty = p.dynasty
+      this.content = p.content
+      this.zhushi = p.zhushi
+      this.note = p.note
       this.updateLines()
       isFav(id).then(v => { this.fav = v })
     },
     updateLines() {
-      const p = this.poem || {}
-      let t = ''
-      if (this.tab === 'content') t = p.content || ''
-      else if (this.tab === 'zhushi') t = p.zhushi || '暂无注释'
-      else t = p.note || '暂无译注'
-      this.lines = t.split('\n').map(s => s.trim()).filter(s => s.length > 0)
-      if (this.lines.length === 0) this.lines = ['暂无内容']
+      this.lines = pickText({ content: this.content, zhushi: this.zhushi, note: this.note }, this.tab)
     },
     setTab(t) {
       this.tab = t
@@ -69,5 +81,6 @@
 </script>
 
 <style>
+  .wrap { flex-direction: column; }
   .line { margin-bottom: 10px; }
 </style>

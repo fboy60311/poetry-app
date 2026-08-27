@@ -2,8 +2,10 @@
   <div class="page">
     <text class="h1">分类浏览</text>
     <scroll scroll-y class="scroll-box">
-      <div class="tile" for="{{it in items}}" onclick="openDynasty(it.value)">
-        <text class="lab">{{ it.label }} · {{ it.n }}首</text>
+      <div class="wrap">
+        <div class="tile" for="{{it in items}}" onclick="openDynasty(it.value)">
+          <text class="lab">{{ it.label }}</text>
+        </div>
       </div>
     </scroll>
   </div>
@@ -11,7 +13,7 @@
 
 <script>
   import router from '@blueos.app.appmanager.router'
-  import poems from '../../data/poems.js'
+  import poemsIndex from '../../data/poems-index.js'
 
   const ORDER = ['先秦','周','汉','战国','魏晋','南北朝','唐','宋','元','明','清','近代']
   const LABEL = {
@@ -23,13 +25,13 @@
     data: { items: [] },
     onInit() {
       const counts = {}
-      poems.forEach(p => { counts[p.dynasty] = (counts[p.dynasty] || 0) + 1 })
+      poemsIndex.forEach(p => { counts[p.dynasty] = (counts[p.dynasty] || 0) + 1 })
       const dyn = Object.keys(counts).sort((a, b) => {
         const ia = ORDER.indexOf(a), ib = ORDER.indexOf(b)
         return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib)
       })
-      const items = [{ value: 'all', label: '全部', n: poems.length }]
-      dyn.forEach(d => items.push({ value: d, label: LABEL[d] || d, n: counts[d] }))
+      const items = [{ value: 'all', label: '全部 (' + poemsIndex.length + '首)' }]
+      dyn.forEach(d => items.push({ value: d, label: (LABEL[d] || d) + ' (' + counts[d] + '首)' }))
       this.items = items
     },
     openDynasty(v) {
@@ -39,6 +41,7 @@
 </script>
 
 <style>
+  .wrap { flex-direction: column; }
   .scroll-box { height: 360px; }
   .tile {
     width: 100%;

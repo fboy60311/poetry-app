@@ -2,8 +2,10 @@
   <div class="page">
     <text class="h1">{{ title }}</text>
     <scroll scroll-y class="scroll-box">
-      <div class="card" for="{{item in list}}" onclick="open(item.id)">
-        <text class="text">{{ item.title }} · {{ item.author }}</text>
+      <div class="wrap">
+        <div class="card" for="{{item in list}}" onclick="open(item.id)">
+          <text class="text">{{ item.title }} · {{ item.author }}</text>
+        </div>
       </div>
     </scroll>
   </div>
@@ -11,19 +13,24 @@
 
 <script>
   import router from '@blueos.app.appmanager.router'
-  import poems from '../../data/poems.js'
+  import poemsIndex from '../../data/poems-index.js'
+
+  const PAGE_SIZE = 20
 
   export default {
     data: { list: [], title: '', type: '', value: '' },
     onInit() {
       const type = this.type || 'dynasty'
       const value = (this.value ? decodeURIComponent(this.value) : '唐')
-      this.title = value
+      this.title = value === 'all' ? '全部诗词' : value
+      let all = []
       if (type === 'dynasty') {
-        this.list = poems.filter(p => p.dynasty === value)
+        if (value === 'all') all = poemsIndex.slice()
+        else all = poemsIndex.filter(p => p.dynasty === value)
       } else {
-        this.list = poems.filter(p => p.author === value)
+        all = poemsIndex.filter(p => p.author === value)
       }
+      this.list = all.slice(0, PAGE_SIZE)
     },
     open(id) {
       router.push({ uri: '/pages/detail?id=' + id })
@@ -32,5 +39,6 @@
 </script>
 
 <style>
+  .wrap { flex-direction: column; }
   .scroll-box { height: 360px; }
 </style>
