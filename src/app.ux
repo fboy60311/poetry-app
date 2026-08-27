@@ -3,6 +3,7 @@
 </template>
 
 <script>
+  /**manifest**/
   export default {
     onCreate() {
       // App 级初始化（如全局收藏缓存）可放这里

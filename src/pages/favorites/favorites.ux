@@ -20,7 +20,7 @@
       this.list = poems.filter(p => ids.indexOf(p.id) >= 0)
     },
     open(id) {
-      router.push({ uri: 'pages/detail/detail?id=' + id })
+      router.push({ uri: '/pages/detail/detail?id=' + id })
     }
   }
 </script>

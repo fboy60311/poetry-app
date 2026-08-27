@@ -34,7 +34,7 @@
       this.items = items
     },
     openDynasty(v) {
-      router.push({ uri: 'pages/list/list?type=dynasty&value=' + encodeURIComponent(v) })
+      router.push({ uri: '/pages/list/list?type=dynasty&value=' + encodeURIComponent(v) })
     }
   }
 </script>

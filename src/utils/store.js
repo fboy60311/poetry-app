@@ -1,5 +1,5 @@
-// 收藏管理：基于 BlueOS K-V 存储（@blueos.app.storage）
-import storage from '@blueos.app.storage'
+// 收藏管理：基于 BlueOS K-V 存储（@blueos.storage.storage）
+import storage from '@blueos.storage.storage'
 
 const KEY = 'gushi_fav_ids'
 

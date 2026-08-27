@@ -20,6 +20,10 @@
       "pages/favorites/favorites": { "component": "favorites" }
     }
   },
+  "features": [
+    { "name": "blueos.app.appmanager.router" },
+    { "name": "blueos.storage.storage" }
+  ],
   "deviceTypeList": ["watch", "watch-round"],
   "appCategory": ["education"]
 }
