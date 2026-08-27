@@ -29,8 +29,10 @@
 
 ```
 poetry-app/
-├─ manifest.json              # 包名 / 路由 / deviceType(watch-round) / 设计宽 466
+├─ package.json               # 项目依赖与脚本
+├─ jsconfig.json              # JS 语法校验配置
 ├─ src/                       # BlueOS 真机工程
+│  ├─ manifest.json           # 包名 / 路由 / deviceType(watch-round) / 设计宽 466
 │  ├─ app.ux                  # 全局样式（米黄背景）
 │  ├─ data/poems.js           # 188 首诗词数据（含 zhushi 注释 / note 译注）
 │  ├─ pages/                  # 6 个页面：首页 / 分类 / 列表 / 详情 / 搜索 / 收藏

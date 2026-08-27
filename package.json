@@ -1,0 +1,14 @@
+{
+  "name": "poetry-app",
+  "version": "1.0.0",
+  "description": "古诗词 BlueOS 手表应用（面向 vivo Watch GT 2）",
+  "main": "src/app.ux",
+  "scripts": {
+    "build": "blueos build",
+    "release": "blueos release"
+  },
+  "keywords": ["blueos", "watch", "poetry", "古诗词"],
+  "author": "fboy60311",
+  "license": "MIT",
+  "devDependencies": {}
+}
