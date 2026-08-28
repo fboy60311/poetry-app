@@ -32,3 +32,6 @@ release/
 
 # BlueOS Studio auto-run test artifacts
 .autorun/
+
+# Packaged build output (RPK zip, regenerated each build)
+*.zip
