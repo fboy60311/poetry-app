@@ -15,7 +15,7 @@
           <text class="btn-text">译注</text>
         </div>
 
-        <div class="card">
+        <div class="card detail-card">
           <text class="text line" for="{{line in lines}}">{{ line }}</text>
         </div>
 
@@ -82,5 +82,6 @@
 
 <style>
   .wrap { flex-direction: column; }
-  .line { margin-bottom: 10px; }
+  .detail-card { flex-direction: column; }
+  .line { width: 100%; margin-bottom: 10px; }
 </style>

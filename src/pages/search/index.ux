@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <text class="h1">搜索</text>
-    <input class="search-box" placeholder="标题 / 作者 / 关键词" onchange="onInput" value="{{ kw }}"></input>
+    <input class="search-box" type="text" placeholder="标题 / 作者 / 关键词" onchange="onInput" value="{{ kw }}"></input>
     <scroll scroll-y="true" class="scroll-box">
       <div class="wrap">
         <div class="card" for="{{item in result}}" onclick="open(item.id)">
@@ -40,6 +40,7 @@
 
 <style>
   .search-box {
+    width: 100%;
     background-color: #FFFFFF;
     border-radius: 20px;
     border: 1px solid #D9C3A0;

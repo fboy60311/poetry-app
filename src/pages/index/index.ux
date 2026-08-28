@@ -11,10 +11,12 @@
           <text class="small">{{ today.dynasty }} · {{ today.author }}</text>
         </div>
 
-        <div class="btn" onclick="goCategory"><text class="btn-text">按朝代</text></div>
-        <div class="btn" onclick="goRandom"><text class="btn-text">随机一首</text></div>
-        <div class="btn" onclick="goSearch"><text class="btn-text">搜索</text></div>
-        <div class="btn" onclick="goFav"><text class="btn-text">我的收藏</text></div>
+        <div class="home-grid">
+          <div class="grid-btn" onclick="goCategory"><text class="btn-text">按朝代</text></div>
+          <div class="grid-btn" onclick="goRandom"><text class="btn-text">随机一首</text></div>
+          <div class="grid-btn" onclick="goSearch"><text class="btn-text">搜索</text></div>
+          <div class="grid-btn" onclick="goFav"><text class="btn-text">我的收藏</text></div>
+        </div>
 
         <text class="sub sec">热门作者</text>
         <div class="author" for="{{a in hotAuthors}}" onclick="goAuthor(a.name)">
@@ -122,12 +124,19 @@
     line-height: 30px;
     text-align: center;
   }
-  .btn {
-    flex-direction: column;
+  .home-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
     width: 100%;
+  }
+  .grid-btn {
+    flex-direction: column;
+    justify-content: center;
+    width: 200px;
     height: 60px;
     background-color: #F3E4C7;
-    border-radius: 22px;
+    border-radius: 20px;
     border: 1px solid #D9C3A0;
     text-align: center;
     margin-bottom: 12px;
