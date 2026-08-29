@@ -11,6 +11,9 @@
   "display": {
     "backgroundColor": "#FBF3E6"
   },
+  "permissions": [
+    { "name": "watch.permission.DEVICE_INFO" }
+  ],
   "router": {
     "entry": "pages/index",
     "pages": {

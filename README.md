@@ -51,9 +51,15 @@ poetry-app/
 
 ## 📸 模拟运行效果
 
-下图模拟 vivo Watch GT 2（466×466 屏）上的实际界面：左侧**首页**（今日诗词 / 随机 / 分类 / 搜索 / 收藏入口），右侧**详情页**（正文 / 注释 / 译注 三 Tab 切换，全局古风米黄 `#FBF3E6` 主题）。
+以下是在 vivo Watch GT 2（466×466 圆形表盘）中的实际运行效果：
 
-![模拟运行效果](preview/screenshot.svg)
+| 首页 | 分类浏览 |
+|------|----------|
+| ![首页](screenshots/home.png) | ![分类浏览](screenshots/category.png) |
+
+| 诗词详情 | 我的收藏 |
+|----------|----------|
+| ![诗词详情](screenshots/detail.png) | ![我的收藏](screenshots/favorites.png) |
 
 ## 🌐 在线体验（Web Demo）
 

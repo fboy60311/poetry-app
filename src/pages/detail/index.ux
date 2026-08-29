@@ -1,26 +1,32 @@
 <template>
   <div class="page">
-    <scroll scroll-y="true" class="scroll-box">
-      <div class="wrap">
-        <text class="h1">{{ title }}</text>
-        <text class="sub">{{ dynasty }} · {{ author }}</text>
+    <scroll scroll-y="true" class="detail-scroll" style="{{scrollStyle}}">
+      <div class="detail-wrap" style="{{wrapStyle}}">
+        <text class="poem-title">{{ title }}</text>
+        <text class="poem-author">{{ dynasty }} · {{ author }}</text>
 
-        <div class="btn {{ tab==='content' ? 'on' : '' }}" onclick="setTab('content')">
-          <text class="btn-text">正文</text>
-        </div>
-        <div class="btn {{ tab==='zhushi' ? 'on' : '' }}" onclick="setTab('zhushi')">
-          <text class="btn-text">注释</text>
-        </div>
-        <div class="btn {{ tab==='note' ? 'on' : '' }}" onclick="setTab('note')">
-          <text class="btn-text">译注</text>
+        <div class="btn-grid">
+          <div class="grid-btn {{ tab==='content' ? 'on' : '' }}" onclick="setTab('content')">
+            <text class="grid-btn-text">原文</text>
+          </div>
+          <div class="grid-btn {{ tab==='zhushi' ? 'on' : '' }}" onclick="setTab('zhushi')">
+            <text class="grid-btn-text">注释</text>
+          </div>
+          <div class="grid-btn {{ tab==='note' ? 'on' : '' }}" onclick="setTab('note')">
+            <text class="grid-btn-text">译注</text>
+          </div>
+          <div class="grid-btn {{ fav ? 'on' : '' }}" onclick="toggle">
+            <text class="grid-btn-text">{{ fav ? '已收藏' : '收藏' }}</text>
+          </div>
         </div>
 
-        <div class="card detail-card">
-          <text class="text line" for="{{line in lines}}">{{ line }}</text>
+        <div class="poem-card">
+          <text class="poem-line {{ tab==='content' ? 'content-line center' : 'note-line left' }}" for="{{line in lines}}">{{ line }}</text>
         </div>
 
-        <div class="btn" onclick="toggle"><text class="btn-text">{{ fav ? '已收藏' : '收藏' }}</text></div>
-        <div class="btn" onclick="goBack"><text class="btn-text">返回</text></div>
+        <div class="back-btn" onclick="goBack">
+          <text class="back-btn-text">返回</text>
+        </div>
       </div>
     </scroll>
   </div>
@@ -30,11 +36,26 @@
   import router from '@blueos.app.appmanager.router'
   import poems from '../../data/poems.js'
   import { toggleFav, isFav } from '../../utils/store.js'
+  import { getScreenInfo } from '../../utils/screen.js'
 
   function pickText(p, key) {
     const t = p[key] || ''
     const arr = t.split('\n').map(s => s.trim()).filter(s => s.length > 0)
     return arr.length > 0 ? arr : ['暂无内容']
+  }
+
+  const CONTENT_WIDTH = 320
+  const PAGE_PAD = 16
+
+  function makeWrapStyle(info) {
+    const ww = info.windowWidth || 466
+    const margin = Math.max(0, Math.floor((ww - 2 * PAGE_PAD - CONTENT_WIDTH) / 2))
+    return 'width: ' + CONTENT_WIDTH + 'px; margin-left: ' + margin + 'px; padding: 10px;'
+  }
+
+  function makeScrollStyle(info) {
+    const wh = info.windowHeight || 466
+    return 'width: 100%; height: ' + (wh - 2 * PAGE_PAD) + 'px;'
   }
 
   export default {
@@ -49,7 +70,9 @@
       note: '',
       fav: false,
       tab: 'content',
-      lines: []
+      lines: [],
+      wrapStyle: 'width: 320px; margin-left: 57px; padding: 10px;',
+      scrollStyle: 'width: 100%; height: 434px;'
     },
     onInit() {
       const id = Number(this.id) || 1
@@ -63,6 +86,11 @@
       this.note = p.note
       this.updateLines()
       isFav(id).then(v => { this.fav = v })
+      const self = this
+      getScreenInfo(function (info) {
+        self.wrapStyle = makeWrapStyle(info)
+        self.scrollStyle = makeScrollStyle(info)
+      })
     },
     updateLines() {
       this.lines = pickText({ content: this.content, zhushi: this.zhushi, note: this.note }, this.tab)
@@ -81,7 +109,96 @@
 </script>
 
 <style>
-  .wrap { flex-direction: column; }
-  .detail-card { flex-direction: column; }
-  .line { width: 100%; margin-bottom: 10px; }
+  .detail-scroll {
+    flex-direction: column;
+    background-color: #FBF3E6;
+  }
+  .detail-wrap {
+    flex-direction: column;
+    background-color: #FBF3E6;
+  }
+  .poem-title {
+    font-size: 22px;
+    color: #8A6D3B;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .poem-author {
+    font-size: 16px;
+    color: #B08A4F;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .btn-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  .grid-btn {
+    flex-direction: column;
+    justify-content: center;
+    width: 150px;
+    height: 42px;
+    background-color: #F3E4C7;
+    border: 1px solid #D9C3A0;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .grid-btn.on {
+    background-color: #E8D4B0;
+    border-color: #8A6D3B;
+  }
+  .grid-btn-text {
+    font-size: 16px;
+    color: #6B4F2A;
+    text-align: center;
+  }
+  .poem-card {
+    flex-direction: column;
+    width: 100%;
+    background-color: #FFFDF8;
+    border: 1px solid #E4D5B7;
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+  .poem-line {
+    width: 100%;
+    color: #4A3B2A;
+    margin-bottom: 10px;
+  }
+  .content-line {
+    font-size: 19px;
+    line-height: 34px;
+  }
+  .note-line {
+    font-size: 16px;
+    line-height: 28px;
+  }
+  .poem-line.center {
+    text-align: center;
+  }
+  .poem-line.left {
+    text-align: left;
+  }
+  .back-btn {
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 40px;
+    background-color: #F3E4C7;
+    border: 1px solid #D9C3A0;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .back-btn-text {
+    font-size: 16px;
+    color: #6B4F2A;
+    text-align: center;
+  }
 </style>

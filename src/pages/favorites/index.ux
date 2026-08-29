@@ -1,14 +1,17 @@
 <template>
   <div class="page">
-    <text class="h1">我的收藏</text>
-    <scroll scroll-y="true" class="scroll-box">
-      <div class="wrap">
-        <div class="card" for="{{item in list}}" onclick="open(item.id)">
-          <text class="text">{{ item.title }} · {{ item.author }}</text>
+    <div class="safe-area" style="{{safeStyle}}">
+      <scroll scroll-y="true" class="fav-scroll" style="{{scrollStyle}}">
+        <div class="fav-wrap">
+          <text class="h1">我的收藏</text>
+          <div class="fav-item" for="{{item in list}}" onclick="open(item.id)">
+            <text class="fav-title">{{ item.title }}</text>
+            <text class="fav-author">{{ item.author }}</text>
+          </div>
+          <text class="sub empty" if="{{ list.length === 0 }}">还没有收藏，去详情页点“收藏”吧</text>
         </div>
-      </div>
-    </scroll>
-    <text class="sub" if="{{ list.length === 0 }}">还没有收藏，去详情页点“收藏”吧</text>
+      </scroll>
+    </div>
   </div>
 </template>
 
@@ -16,13 +19,34 @@
   import router from '@blueos.app.appmanager.router'
   import poemsIndex from '../../data/poems-index.js'
   import { getFavIds } from '../../utils/store.js'
+  import { getScreenInfo } from '../../utils/screen.js'
+
+  function makeSafeStyle(info) {
+    const s = info.safeSquareSize || 329
+    const m = info.safeMargin || 52
+    return 'width: ' + s + 'px; height: ' + s + 'px; margin-left: ' + m + 'px; margin-top: ' + m + 'px;'
+  }
+
+  function makeScrollStyle(info) {
+    const s = info.safeSquareSize || 329
+    return 'width: 100%; height: ' + s + 'px;'
+  }
 
   export default {
-    data: { list: [] },
+    data: {
+      list: [],
+      safeStyle: 'width: 329px; height: 329px; margin-left: 52px; margin-top: 52px;',
+      scrollStyle: 'width: 100%; height: 329px;'
+    },
     onInit() {
+      const self = this
       getFavIds().then(ids => {
         const all = poemsIndex.filter(p => ids.indexOf(p.id) >= 0)
-        this.list = all.slice(0, 20)
+        self.list = all.slice(0, 20)
+      })
+      getScreenInfo(function (info) {
+        self.safeStyle = makeSafeStyle(info)
+        self.scrollStyle = makeScrollStyle(info)
       })
     },
     open(id) {
@@ -32,6 +56,46 @@
 </script>
 
 <style>
-  .wrap { flex-direction: column; }
-  .scroll-box { height: 360px; }
+  .safe-area {
+    flex-direction: column;
+    background-color: #FBF3E6;
+  }
+  .fav-scroll {
+    flex-direction: column;
+  }
+  .fav-wrap {
+    flex-direction: column;
+    width: 100%;
+    padding: 12px;
+  }
+  .h1 {
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .fav-item {
+    flex-direction: column;
+    width: 100%;
+    background-color: #FFFDF8;
+    border: 2px solid #D9C3A0;
+    border-radius: 14px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+  }
+  .fav-title {
+    font-size: 17px;
+    color: #4A3B2A;
+    line-height: 24px;
+    margin-bottom: 2px;
+  }
+  .fav-author {
+    font-size: 14px;
+    color: #6B4F2A;
+    line-height: 20px;
+  }
+  .empty {
+    text-align: center;
+    font-size: 15px;
+    margin-top: 20px;
+  }
 </style>
