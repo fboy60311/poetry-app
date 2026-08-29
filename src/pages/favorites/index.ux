@@ -8,7 +8,9 @@
             <text class="fav-title">{{ item.title }}</text>
             <text class="fav-author">{{ item.author }}</text>
           </div>
-          <text class="sub empty" if="{{ list.length === 0 }}">还没有收藏，去详情页点“收藏”吧</text>
+          <text class="sub empty" if="{{ list.length === 0 }}">
+            还没有收藏，去详情页点“收藏”吧
+          </text>
         </div>
       </scroll>
     </div>
@@ -24,7 +26,17 @@
   function makeSafeStyle(info) {
     const s = info.safeSquareSize || 329
     const m = info.safeMargin || 52
-    return 'width: ' + s + 'px; height: ' + s + 'px; margin-left: ' + m + 'px; margin-top: ' + m + 'px;'
+    return (
+      'width: ' +
+      s +
+      'px; height: ' +
+      s +
+      'px; margin-left: ' +
+      m +
+      'px; margin-top: ' +
+      m +
+      'px;'
+    )
   }
 
   function makeScrollStyle(info) {
@@ -35,13 +47,14 @@
   export default {
     data: {
       list: [],
-      safeStyle: 'width: 329px; height: 329px; margin-left: 52px; margin-top: 52px;',
-      scrollStyle: 'width: 100%; height: 329px;'
+      safeStyle:
+        'width: 329px; height: 329px; margin-left: 52px; margin-top: 52px;',
+      scrollStyle: 'width: 100%; height: 329px;',
     },
     onInit() {
       const self = this
-      getFavIds().then(ids => {
-        const all = poemsIndex.filter(p => ids.indexOf(p.id) >= 0)
+      getFavIds().then((ids) => {
+        const all = poemsIndex.filter((p) => ids.indexOf(p.id) >= 0)
         self.list = all.slice(0, 20)
       })
       getScreenInfo(function (info) {
@@ -51,14 +64,14 @@
     },
     open(id) {
       router.push({ uri: '/pages/detail?id=' + id })
-    }
+    },
   }
 </script>
 
 <style>
   .safe-area {
     flex-direction: column;
-    background-color: #FBF3E6;
+    background-color: #fbf3e6;
   }
   .fav-scroll {
     flex-direction: column;
@@ -76,21 +89,21 @@
   .fav-item {
     flex-direction: column;
     width: 100%;
-    background-color: #FFFDF8;
-    border: 2px solid #D9C3A0;
+    background-color: #fffdf8;
+    border: 2px solid #d9c3a0;
     border-radius: 14px;
     padding: 10px 12px;
     margin-bottom: 10px;
   }
   .fav-title {
     font-size: 17px;
-    color: #4A3B2A;
+    color: #4a3b2a;
     line-height: 24px;
     margin-bottom: 2px;
   }
   .fav-author {
     font-size: 14px;
-    color: #6B4F2A;
+    color: #6b4f2a;
     line-height: 20px;
   }
   .empty {
